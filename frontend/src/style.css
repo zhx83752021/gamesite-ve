@@ -288,14 +288,31 @@ body {
 /* 修复选择器下拉选项 */
 .el-select-dropdown__item {
   color: #606266 !important;
+  background-color: #ffffff !important;
 }
 
 .el-select-dropdown__item.selected {
   color: #409EFF !important;
+  font-weight: 600;
 }
 
 .el-select-dropdown__item:hover {
   background-color: #f5f7fa !important;
+  color: #606266 !important;
+}
+
+.el-select-dropdown__item.is-disabled {
+  color: #C0C4CC !important;
+}
+
+/* 修复选择器下拉面板 */
+.el-select-dropdown {
+  background-color: #ffffff !important;
+}
+
+.el-select-dropdown .el-popper__arrow::before {
+  background-color: #ffffff !important;
+  border-color: #E4E7ED !important;
 }
 
 /* 修复头像显示 */
