@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 赛博朋克全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Orbitron', 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #050816;
+  color: #E0E7FF;
+}
+
+#app {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0A0E27 0%, #050816 100%);
+}
+
+/* 霓虹滚动条 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0E27;
+  border: 1px solid #1E3A8A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #B026FF 0%, #00D9FF 100%);
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(176, 38, 255, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #D946EF 0%, #06B6D4 100%);
+  box-shadow: 0 0 20px rgba(176, 38, 255, 0.8);
+}
+
+/* 霓虹文字效果 */
+.neon-text {
+  text-shadow:
+    0 0 10px rgba(176, 38, 255, 0.8),
+    0 0 20px rgba(176, 38, 255, 0.5),
+    0 0 30px rgba(176, 38, 255, 0.3);
+}
+
+.neon-text-blue {
+  text-shadow:
+    0 0 10px rgba(0, 217, 255, 0.8),
+    0 0 20px rgba(0, 217, 255, 0.5),
+    0 0 30px rgba(0, 217, 255, 0.3);
+}
+
+/* 霓虹边框 */
+.neon-border {
+  border: 2px solid #B026FF;
+  box-shadow:
+    0 0 10px rgba(176, 38, 255, 0.5),
+    inset 0 0 10px rgba(176, 38, 255, 0.2);
+}
+
+/* 网格背景 */
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(176, 38, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(176, 38, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* 扫描线效果 */
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.scan-line {
+  position: fixed;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0, 217, 255, 0.8) 50%,
+    transparent 100%);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 后台管理系统样式修复 */
+.admin-layout {
+  background: #f0f2f5 !important;
+}
+
+.admin-layout .el-container {
+  background: transparent;
+}
+
+.admin-layout .el-aside {
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-layout .el-main {
+  min-height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+/* 确保后台页面没有被全局背景覆盖 */
+.admin-layout,
+.admin-layout * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Element Plus 遮罩层样式修复 */
+.el-overlay {
+  z-index: 2000 !important;
+}
+
+.el-message-box__wrapper {
+  z-index: 2001 !important;
+}
+
+.el-loading-mask {
+  z-index: 2000 !important;
+}

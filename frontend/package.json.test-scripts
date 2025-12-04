@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:unit": "vitest",
+    "test:unit:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:all": "npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.10.0",
+    "@vitest/ui": "^1.0.0",
+    "@vue/test-utils": "^2.4.0",
+    "vitest": "^1.0.0",
+    "happy-dom": "^12.10.3"
+  }
+}
