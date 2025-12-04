@@ -307,16 +307,21 @@ body {
   color: #C0C4CC !important;
 }
 
-/* 修复选择器占位符文字 */
-.admin-layout .el-select .el-input .el-input__inner::placeholder {
+/* 修复选择器占位符文字 - 多层选择器确保优先级 */
+.admin-layout .el-select .el-input .el-input__inner::placeholder,
+.admin-layout .el-select__wrapper .el-input__inner::placeholder,
+.admin-layout .el-select input::placeholder,
+.admin-layout .el-select .el-input input::placeholder {
   color: #C0C4CC !important;
+  opacity: 1 !important;
 }
 
 .admin-layout .el-select .el-input__wrapper {
   background-color: #ffffff !important;
 }
 
-.admin-layout .el-select .el-input__inner {
+.admin-layout .el-select .el-input__inner,
+.admin-layout .el-select input {
   color: #606266 !important;
 }
 
