@@ -206,11 +206,12 @@ body {
   color: #ffffff !important;
 }
 
-/* 修复 link 类型按钮 - 无背景色，只有文字颜色 */
+/* 修复 link 类型按钮 - 透明背景，带边框 */
 .admin-layout .el-button.is-link {
   background-color: transparent !important;
-  border: none !important;
-  padding: 4px 8px !important;
+  padding: 4px 10px !important;
+  border: 1px solid transparent !important;
+  border-radius: 4px !important;
 }
 
 .admin-layout .el-button.is-link:hover,
@@ -221,45 +222,66 @@ body {
 .admin-layout .el-button.is-link.el-button--primary {
   color: #409EFF !important;
   background-color: transparent !important;
+  border-color: #409EFF !important;
 }
 
 .admin-layout .el-button.is-link.el-button--primary:hover,
 .admin-layout .el-button.is-link.el-button--primary:focus {
   color: #66b1ff !important;
-  background-color: transparent !important;
+  background-color: rgba(64, 158, 255, 0.1) !important;
+  border-color: #66b1ff !important;
 }
 
 .admin-layout .el-button.is-link.el-button--success {
   color: #67C23A !important;
   background-color: transparent !important;
+  border-color: #67C23A !important;
 }
 
 .admin-layout .el-button.is-link.el-button--success:hover,
 .admin-layout .el-button.is-link.el-button--success:focus {
   color: #85ce61 !important;
-  background-color: transparent !important;
+  background-color: rgba(103, 194, 58, 0.1) !important;
+  border-color: #85ce61 !important;
 }
 
 .admin-layout .el-button.is-link.el-button--warning {
   color: #E6A23C !important;
   background-color: transparent !important;
+  border-color: #E6A23C !important;
 }
 
 .admin-layout .el-button.is-link.el-button--warning:hover,
 .admin-layout .el-button.is-link.el-button--warning:focus {
   color: #ebb563 !important;
-  background-color: transparent !important;
+  background-color: rgba(230, 162, 60, 0.1) !important;
+  border-color: #ebb563 !important;
 }
 
 .admin-layout .el-button.is-link.el-button--danger {
   color: #F56C6C !important;
   background-color: transparent !important;
+  border-color: #F56C6C !important;
 }
 
 .admin-layout .el-button.is-link.el-button--danger:hover,
 .admin-layout .el-button.is-link.el-button--danger:focus {
   color: #f78989 !important;
+  background-color: rgba(245, 108, 108, 0.1) !important;
+  border-color: #f78989 !important;
+}
+
+.admin-layout .el-button.is-link.el-button--info {
+  color: #909399 !important;
   background-color: transparent !important;
+  border-color: #909399 !important;
+}
+
+.admin-layout .el-button.is-link.el-button--info:hover,
+.admin-layout .el-button.is-link.el-button--info:focus {
+  color: #a6a9ad !important;
+  background-color: rgba(144, 147, 153, 0.1) !important;
+  border-color: #a6a9ad !important;
 }
 
 /* 修复默认按钮边框 */
@@ -283,6 +305,19 @@ body {
 
 .admin-layout .el-input__inner::placeholder {
   color: #C0C4CC !important;
+}
+
+/* 修复选择器占位符文字 */
+.admin-layout .el-select .el-input .el-input__inner::placeholder {
+  color: #C0C4CC !important;
+}
+
+.admin-layout .el-select .el-input__wrapper {
+  background-color: #ffffff !important;
+}
+
+.admin-layout .el-select .el-input__inner {
+  color: #606266 !important;
 }
 
 /* 修复选择器下拉选项 */
