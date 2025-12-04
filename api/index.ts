@@ -121,7 +121,7 @@ app.post('/api/v1/auth/login', async (req, res) => {
         role: user.role
       },
       JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
+      { expiresIn: JWT_EXPIRES_IN } as jwt.SignOptions
     );
 
     res.json({
@@ -192,7 +192,7 @@ app.post('/api/v1/auth/register', async (req, res) => {
         role: user.role
       },
       JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
+      { expiresIn: JWT_EXPIRES_IN } as jwt.SignOptions
     );
 
     res.status(201).json({
