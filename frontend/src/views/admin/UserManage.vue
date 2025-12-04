@@ -7,19 +7,19 @@
     <!-- 搜索筛选 -->
     <el-card class="mb-6">
       <el-form :inline="true" class="search-form">
-        <el-form-item label="用户名">
+        <el-form-item>
           <el-input placeholder="请输入用户名" clearable style="width: 200px" />
         </el-form-item>
-        <el-form-item label="角色">
-          <el-select placeholder="请选择角色" clearable style="width: 150px">
+        <el-form-item>
+          <el-select placeholder="请选择角色" clearable style="width: 180px">
             <el-option label="全部" value="" />
             <el-option label="普通用户" value="user" />
             <el-option label="开发者" value="developer" />
             <el-option label="管理员" value="admin" />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select placeholder="请选择状态" clearable style="width: 150px">
+        <el-form-item>
+          <el-select placeholder="请选择状态" clearable style="width: 180px">
             <el-option label="全部" value="" />
             <el-option label="正常" value="active" />
             <el-option label="封禁" value="banned" />

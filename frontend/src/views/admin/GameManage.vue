@@ -11,19 +11,19 @@
     <!-- 搜索筛选 -->
     <el-card class="mb-6">
       <el-form :inline="true" :model="searchForm">
-        <el-form-item label="游戏名称">
+        <el-form-item>
           <el-input v-model="searchForm.title" placeholder="请输入游戏名称" clearable style="width: 200px" />
         </el-form-item>
-        <el-form-item label="分类">
-          <el-select v-model="searchForm.category" placeholder="请选择分类" clearable style="width: 150px">
+        <el-form-item>
+          <el-select v-model="searchForm.category" placeholder="请选择分类" clearable style="width: 180px">
             <el-option label="全部" value="" />
             <el-option label="动作冒险" value="action" />
             <el-option label="解谜益智" value="puzzle" />
             <el-option label="运动健身" value="fitness" />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
+        <el-form-item>
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 180px">
             <el-option label="全部" value="" />
             <el-option label="已发布" value="published" />
             <el-option label="审核中" value="review" />
