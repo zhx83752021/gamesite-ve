@@ -157,10 +157,16 @@ function handleCommand(command: string) {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: white !important;
   font-size: 20px;
   font-weight: bold;
   background-color: #242f3e;
+}
+
+.sidebar-header h2,
+.sidebar-header span {
+  color: white !important;
+  margin: 0;
 }
 
 .admin-header {
