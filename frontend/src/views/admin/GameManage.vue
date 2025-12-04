@@ -95,6 +95,73 @@
         />
       </div>
     </el-card>
+
+    <!-- 查看游戏详情对话框 -->
+    <el-dialog v-model="viewDialogVisible" title="游戏详情" width="800px">
+      <el-descriptions :column="2" border v-if="currentGame">
+        <el-descriptions-item label="游戏ID">{{ currentGame.id }}</el-descriptions-item>
+        <el-descriptions-item label="游戏名称">{{ currentGame.title }}</el-descriptions-item>
+        <el-descriptions-item label="分类">
+          <el-tag>{{ currentGame.category_name }}</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="价格">
+          <span v-if="currentGame.pricing_type === 'free'" class="text-green-600">免费</span>
+          <span v-else>¥{{ currentGame.price }}</span>
+        </el-descriptions-item>
+        <el-descriptions-item label="评分">
+          <el-rate v-model="currentGame.rating" disabled show-score />
+        </el-descriptions-item>
+        <el-descriptions-item label="下载量">{{ currentGame.downloads }}</el-descriptions-item>
+        <el-descriptions-item label="状态">
+          <el-tag v-if="currentGame.status === 'published'" type="success">已发布</el-tag>
+          <el-tag v-else-if="currentGame.status === 'review'" type="warning">审核中</el-tag>
+          <el-tag v-else type="info">草稿</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="封面" :span="2">
+          <el-image :src="currentGame.cover_image" style="width: 200px; height: 200px" fit="cover" />
+        </el-descriptions-item>
+      </el-descriptions>
+      <template #footer>
+        <el-button @click="viewDialogVisible = false">关闭</el-button>
+      </template>
+    </el-dialog>
+
+    <!-- 编辑游戏对话框 -->
+    <el-dialog v-model="editDialogVisible" title="编辑游戏" width="600px">
+      <el-form :model="editForm" label-width="100px" v-if="currentGame">
+        <el-form-item label="游戏名称">
+          <el-input v-model="editForm.title" placeholder="请输入游戏名称" />
+        </el-form-item>
+        <el-form-item label="分类">
+          <el-select v-model="editForm.category" placeholder="请选择分类">
+            <el-option label="动作冒险" value="action" />
+            <el-option label="解谜益智" value="puzzle" />
+            <el-option label="运动健身" value="fitness" />
+            <el-option label="音乐节奏" value="music" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="价格类型">
+          <el-radio-group v-model="editForm.pricing_type">
+            <el-radio label="free">免费</el-radio>
+            <el-radio label="paid">付费</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="价格" v-if="editForm.pricing_type === 'paid'">
+          <el-input-number v-model="editForm.price" :min="0" :step="1" />
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="editForm.status" placeholder="请选择状态">
+            <el-option label="草稿" value="draft" />
+            <el-option label="审核中" value="review" />
+            <el-option label="已发布" value="published" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="editDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmEdit">保存</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -102,10 +169,19 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import type { Game } from '@/types'
 
 const loading = ref(false)
-const gameList = ref<Game[]>([])
+const gameList = ref<any[]>([])
+const viewDialogVisible = ref(false)
+const editDialogVisible = ref(false)
+const currentGame = ref<any>(null)
+const editForm = reactive({
+  title: '',
+  category: '',
+  pricing_type: 'free',
+  price: 0,
+  status: 'draft'
+})
 
 const searchForm = reactive({
   title: '',
@@ -190,11 +266,33 @@ function handleAdd() {
 }
 
 function handleView(row: any) {
-  ElMessage.info(`查看游戏: ${row.title}`)
+  currentGame.value = row
+  viewDialogVisible.value = true
 }
 
 function handleEdit(row: any) {
-  ElMessage.info(`编辑游戏: ${row.title}`)
+  currentGame.value = row
+  // 填充编辑表单
+  Object.assign(editForm, {
+    title: row.title,
+    category: row.category || 'action',
+    pricing_type: row.pricing_type,
+    price: row.price || 0,
+    status: row.status
+  })
+  editDialogVisible.value = true
+}
+
+function confirmEdit() {
+  if (!editForm.title) {
+    ElMessage.warning('请输入游戏名称')
+    return
+  }
+
+  // TODO: 调用实际API更新游戏信息
+  ElMessage.success('保存成功')
+  editDialogVisible.value = false
+  loadGames()
 }
 
 async function handleChangeStatus(row: any) {

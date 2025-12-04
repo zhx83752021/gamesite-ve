@@ -365,6 +365,26 @@ body {
   display: block;
 }
 
+/* 修复 MessageBox 弹窗按钮样式 */
+.el-message-box__btns .el-button--primary {
+  color: #ffffff !important;
+  background-color: #409EFF !important;
+  border-color: #409EFF !important;
+}
+
+.el-message-box__btns .el-button--primary:hover,
+.el-message-box__btns .el-button--primary:focus {
+  background-color: #66b1ff !important;
+  border-color: #66b1ff !important;
+  color: #ffffff !important;
+}
+
+.el-message-box__btns .el-button--default {
+  color: #606266 !important;
+  background-color: #ffffff !important;
+  border-color: #DCDFE6 !important;
+}
+
 /* Element Plus 遮罩层样式修复 */
 .el-overlay {
   z-index: 2000 !important;
