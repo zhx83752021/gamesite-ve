@@ -210,4 +210,16 @@ function handleCommand(command: string) {
   background: #f0f2f5;
   padding: 20px;
 }
+
+:deep(.el-breadcrumb__inner) {
+  color: #303133 !important;
+}
+
+:deep(.el-breadcrumb__inner.is-link) {
+  color: #303133 !important;
+}
+
+:deep(.el-breadcrumb__inner.is-link:hover) {
+  color: #409EFF !important;
+}
 </style>

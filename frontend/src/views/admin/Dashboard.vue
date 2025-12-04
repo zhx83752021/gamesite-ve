@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <h1 class="text-3xl font-bold mb-6 text-black">数据分析大屏</h1>
+    <h1 class="text-2xl font-bold mb-6 text-black">数据分析大屏</h1>
 
     <!-- KPI 指标卡片 -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
