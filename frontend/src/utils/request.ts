@@ -1,7 +1,14 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
+
+// 定义响应数据结构
+export interface ApiResponse<T = any> {
+  code: number
+  message: string
+  data: T
+}
 
 // 创建axios实例
 const service: AxiosInstance = axios.create({
@@ -32,11 +39,11 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-  (response: AxiosResponse) => {
+  (response: AxiosResponse<ApiResponse>): ApiResponse | Promise<ApiResponse> => {
     const res = response.data
 
-    // 如果返回的状态码不是200，则判断为错误
-    if (res.code !== 200) {
+    // 如果返回的状态码不是200或201，则判断为错误
+    if (res.code !== 200 && res.code !== 201) {
       ElMessage.error(res.message || '请求失败')
 
       // 401: 未授权
