@@ -403,10 +403,6 @@ onMounted(() => {
   margin-bottom: 20px;
 }
 
-.table-card {
-  height: calc(100vh - 240px);
-}
-
 .card-header {
   display: flex;
   justify-content: space-between;
