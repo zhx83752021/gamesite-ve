@@ -6,31 +6,32 @@
 
     <el-card class="filter-card">
       <el-form :inline="true" :model="filterForm">
-        <el-form-item label="关键词">
-          <el-input v-model="filterForm.keyword" placeholder="搜索评论内容、用户名" clearable />
+        <el-form-item>
+          <el-input v-model="filterForm.keyword" placeholder="搜索评论内容、用户名" clearable style="width: 200px" />
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="filterForm.status" placeholder="全部状态" clearable>
+        <el-form-item>
+          <el-select v-model="filterForm.status" placeholder="全部状态" clearable style="width: 180px">
             <el-option label="全部" value="" />
             <el-option label="待审核" value="pending" />
             <el-option label="已通过" value="approved" />
             <el-option label="已拒绝" value="rejected" />
           </el-select>
         </el-form-item>
-        <el-form-item label="类型">
-          <el-select v-model="filterForm.type" placeholder="全部类型" clearable>
+        <el-form-item>
+          <el-select v-model="filterForm.type" placeholder="全部类型" clearable style="width: 180px">
             <el-option label="全部" value="" />
             <el-option label="游戏评论" value="game" />
             <el-option label="帖子评论" value="post" />
           </el-select>
         </el-form-item>
-        <el-form-item label="时间范围">
+        <el-form-item>
           <el-date-picker
             v-model="filterForm.dateRange"
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            style="width: 280px"
           />
         </el-form-item>
         <el-form-item>
@@ -99,10 +100,11 @@
             {{ formatTime(row.created_at) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column label="操作" width="220" fixed="right">
           <template #default="{ row }">
             <el-button
               v-if="row.status === 'pending'"
+              link
               type="success"
               size="small"
               @click="handleApprove(row)"
@@ -111,16 +113,17 @@
             </el-button>
             <el-button
               v-if="row.status === 'pending'"
+              link
               type="warning"
               size="small"
               @click="handleReject(row)"
             >
               拒绝
             </el-button>
-            <el-button type="primary" size="small" @click="handleView(row)">
+            <el-button link type="primary" size="small" @click="handleView(row)">
               详情
             </el-button>
-            <el-button type="danger" size="small" @click="handleDelete(row)">
+            <el-button link type="danger" size="small" @click="handleDelete(row)">
               删除
             </el-button>
           </template>

@@ -123,6 +123,7 @@
           <template #default="{ row }">
             <el-button
               v-if="row.status === 'pending'"
+              link
               type="success"
               size="small"
               @click="handleApprove(row)"
@@ -131,6 +132,7 @@
             </el-button>
             <el-button
               v-if="row.status === 'pending'"
+              link
               type="warning"
               size="small"
               @click="handleReject(row)"
@@ -139,16 +141,17 @@
             </el-button>
             <el-button
               v-if="row.status === 'published'"
+              link
               type="warning"
               size="small"
               @click="handleHide(row)"
             >
               隐藏
             </el-button>
-            <el-button type="primary" size="small" @click="handleView(row)">
+            <el-button link type="primary" size="small" @click="handleView(row)">
               详情
             </el-button>
-            <el-button type="danger" size="small" @click="handleDelete(row)">
+            <el-button link type="danger" size="small" @click="handleDelete(row)">
               删除
             </el-button>
           </template>

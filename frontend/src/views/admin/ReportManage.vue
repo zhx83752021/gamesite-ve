@@ -113,17 +113,19 @@
           <template #default="{ row }">
             <el-button
               v-if="row.status === 'pending'"
+              link
               type="primary"
               size="small"
               @click="handleProcess(row)"
             >
               处理
             </el-button>
-            <el-button type="info" size="small" @click="handleView(row)">
+            <el-button link type="info" size="small" @click="handleView(row)">
               详情
             </el-button>
             <el-button
               v-if="row.status === 'pending'"
+              link
               type="danger"
               size="small"
               @click="handleReject(row)"
