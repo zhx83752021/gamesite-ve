@@ -1,0 +1,15 @@
+node_modules
+.env
+.env.local
+.DS_Store
+*.log
+dist
+.cache
+backend/node_modules
+backend/dist
+frontend/node_modules
+frontend/dist
+*.test.ts
+*.spec.ts
+tests/
+.git
