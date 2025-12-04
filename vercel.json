@@ -12,9 +12,17 @@
     {
       "src": "api/index.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/init-db.ts",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
+    {
+      "src": "/init-db",
+      "dest": "/api/init-db.ts"
+    },
     {
       "src": "/api/(.*)",
       "dest": "/api/index.ts"
