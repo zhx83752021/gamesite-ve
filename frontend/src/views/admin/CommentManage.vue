@@ -219,7 +219,7 @@ const pagination = reactive({
 })
 
 // 表格数据
-const tableData = ref([])
+const tableData = ref<any[]>([])
 const loading = ref(false)
 const selectedIds = ref<number[]>([])
 
