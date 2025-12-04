@@ -1,9 +1,10 @@
 /**
  * 数据库初始化脚本 - 用于 Vercel 首次部署
- * 访问 /api/init-db 来初始化数据库
+ * 访问 /init-db 来初始化数据库
  */
 
-import { pool } from '../backend/src/config/database.js';
+import { Pool } from 'pg';
+import bcryptjs from 'bcryptjs';
 
 export default async function handler(req: any, res: any) {
   // 仅允许 POST 请求
@@ -16,6 +17,12 @@ export default async function handler(req: any, res: any) {
   if (secret !== process.env.INIT_DB_SECRET) {
     return res.status(403).json({ error: 'Unauthorized' });
   }
+
+  // 创建数据库连接
+  const pool = new Pool({
+    connectionString: process.env.POSTGRES_URL,
+    ssl: { rejectUnauthorized: false }
+  });
 
   try {
     // 创建用户表
@@ -112,8 +119,7 @@ export default async function handler(req: any, res: any) {
     `);
 
     // 插入默认管理员账户
-    const bcrypt = await import('bcryptjs');
-    const adminPassword = await bcrypt.hash('admin123', 10);
+    const adminPassword = await bcryptjs.hash('admin123', 10);
 
     await pool.query(`
       INSERT INTO users (username, email, password_hash, role, bio)
@@ -122,7 +128,7 @@ export default async function handler(req: any, res: any) {
     `, ['admin', 'admin@example.com', adminPassword, 'admin', '系统管理员']);
 
     // 插入测试开发者账户
-    const devPassword = await bcrypt.hash('admin123', 10);
+    const devPassword = await bcryptjs.hash('admin123', 10);
     await pool.query(`
       INSERT INTO users (username, email, password_hash, role, bio)
       VALUES ($1, $2, $3, $4, $5)
