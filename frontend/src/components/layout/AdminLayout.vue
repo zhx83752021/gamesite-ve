@@ -199,11 +199,21 @@ function handleCommand(command: string) {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.user-dropdown:hover {
+  background-color: #f5f7fa;
 }
 
 .username {
   font-size: 14px;
   color: #303133;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
 }
 
 .admin-main {
