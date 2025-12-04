@@ -1,9 +1,19 @@
 {
-  "extends": "../backend/tsconfig.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022"],
+    "moduleResolution": "node",
     "outDir": "./dist",
     "rootDir": ".",
     "baseUrl": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "types": ["node"],
     "paths": {
       "@/*": ["../backend/src/*"]
     }
@@ -14,6 +24,8 @@
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "../backend/tests",
+    "../backend/database"
   ]
 }
