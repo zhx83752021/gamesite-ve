@@ -1,5 +1,9 @@
 <template>
   <div class="system-settings">
+    <div class="page-header mb-6">
+      <h1 class="text-2xl font-bold text-black">系统设置</h1>
+    </div>
+
     <el-tabs v-model="activeTab" type="border-card">
       <!-- 站点设置 -->
       <el-tab-pane label="站点设置" name="site">

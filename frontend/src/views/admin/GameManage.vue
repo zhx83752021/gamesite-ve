@@ -1,7 +1,7 @@
 <template>
   <div class="game-manage">
     <div class="page-header mb-6">
-      <h1 class="text-2xl font-bold">游戏管理</h1>
+      <h1 class="text-2xl font-bold text-black">游戏管理</h1>
       <el-button type="primary" @click="handleAdd">
         <el-icon><Plus /></el-icon>
         添加游戏
@@ -12,10 +12,10 @@
     <el-card class="mb-6">
       <el-form :inline="true" :model="searchForm">
         <el-form-item label="游戏名称">
-          <el-input v-model="searchForm.title" placeholder="请输入游戏名称" clearable />
+          <el-input v-model="searchForm.title" placeholder="请输入游戏名称" clearable style="width: 200px" />
         </el-form-item>
         <el-form-item label="分类">
-          <el-select v-model="searchForm.category" placeholder="请选择分类" clearable>
+          <el-select v-model="searchForm.category" placeholder="请选择分类" clearable style="width: 150px">
             <el-option label="全部" value="" />
             <el-option label="动作冒险" value="action" />
             <el-option label="解谜益智" value="puzzle" />
@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
             <el-option label="全部" value="" />
             <el-option label="已发布" value="published" />
             <el-option label="审核中" value="review" />
@@ -31,8 +31,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleSearch">搜索</el-button>
-          <el-button @click="handleReset">重置</el-button>
+          <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
+          <el-button icon="RefreshLeft" @click="handleReset">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>

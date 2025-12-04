@@ -1,5 +1,9 @@
 <template>
   <div class="post-manage">
+    <div class="page-header mb-6">
+      <h1 class="text-2xl font-bold text-black">帖子管理</h1>
+    </div>
+
     <el-card class="filter-card">
       <el-form :inline="true" :model="filterForm">
         <el-form-item label="关键词">

@@ -1,17 +1,17 @@
 <template>
   <div class="user-manage">
     <div class="page-header mb-6">
-      <h1 class="text-2xl font-bold">用户管理</h1>
+      <h1 class="text-2xl font-bold text-black">用户管理</h1>
     </div>
 
     <!-- 搜索筛选 -->
     <el-card class="mb-6">
-      <el-form :inline="true">
+      <el-form :inline="true" class="search-form">
         <el-form-item label="用户名">
-          <el-input placeholder="请输入用户名" clearable />
+          <el-input placeholder="请输入用户名" clearable style="width: 200px" />
         </el-form-item>
         <el-form-item label="角色">
-          <el-select placeholder="请选择角色" clearable>
+          <el-select placeholder="请选择角色" clearable style="width: 150px">
             <el-option label="全部" value="" />
             <el-option label="普通用户" value="user" />
             <el-option label="开发者" value="developer" />
@@ -19,15 +19,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select placeholder="请选择状态" clearable>
+          <el-select placeholder="请选择状态" clearable style="width: 150px">
             <el-option label="全部" value="" />
             <el-option label="正常" value="active" />
             <el-option label="封禁" value="banned" />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">搜索</el-button>
-          <el-button>重置</el-button>
+          <el-button type="primary" icon="Search">搜索</el-button>
+          <el-button icon="RefreshLeft">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
