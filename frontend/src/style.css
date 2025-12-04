@@ -140,30 +140,70 @@ body {
   padding: 5px 16px !important;
 }
 
-/* 修复按钮样式 - 只修复实心按钮的文字颜色 */
+/* 修复按钮样式 - 强制设置实心按钮的背景色和文字颜色 */
 .admin-layout .el-button--primary {
   color: #ffffff !important;
+  background-color: #409EFF !important;
   border-color: #409EFF !important;
+}
+
+.admin-layout .el-button--primary:hover,
+.admin-layout .el-button--primary:focus {
+  background-color: #66b1ff !important;
+  border-color: #66b1ff !important;
+  color: #ffffff !important;
 }
 
 .admin-layout .el-button--success {
   color: #ffffff !important;
+  background-color: #67C23A !important;
   border-color: #67C23A !important;
+}
+
+.admin-layout .el-button--success:hover,
+.admin-layout .el-button--success:focus {
+  background-color: #85ce61 !important;
+  border-color: #85ce61 !important;
+  color: #ffffff !important;
 }
 
 .admin-layout .el-button--warning {
   color: #ffffff !important;
+  background-color: #E6A23C !important;
   border-color: #E6A23C !important;
+}
+
+.admin-layout .el-button--warning:hover,
+.admin-layout .el-button--warning:focus {
+  background-color: #ebb563 !important;
+  border-color: #ebb563 !important;
+  color: #ffffff !important;
 }
 
 .admin-layout .el-button--danger {
   color: #ffffff !important;
+  background-color: #F56C6C !important;
   border-color: #F56C6C !important;
+}
+
+.admin-layout .el-button--danger:hover,
+.admin-layout .el-button--danger:focus {
+  background-color: #f78989 !important;
+  border-color: #f78989 !important;
+  color: #ffffff !important;
 }
 
 .admin-layout .el-button--info {
   color: #ffffff !important;
+  background-color: #909399 !important;
   border-color: #909399 !important;
+}
+
+.admin-layout .el-button--info:hover,
+.admin-layout .el-button--info:focus {
+  background-color: #a6a9ad !important;
+  border-color: #a6a9ad !important;
+  color: #ffffff !important;
 }
 
 /* 修复 link 类型按钮 - 保留原有颜色和边框 */
