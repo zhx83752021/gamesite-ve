@@ -195,25 +195,38 @@ function handleCommand(command: string) {
 }
 
 .user-dropdown {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 5px 12px;
   border-radius: 4px;
   transition: background-color 0.3s;
+  height: 40px;
 }
 
 .user-dropdown:hover {
   background-color: #f5f7fa;
 }
 
+.user-dropdown .el-avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
 .username {
   font-size: 14px;
   color: #303133;
-  line-height: 1;
-  padding: 0;
-  margin: 0;
+  line-height: 32px;
+  white-space: nowrap;
+}
+
+.user-dropdown .el-icon {
+  font-size: 14px;
+  color: #606266;
+  display: inline-flex;
+  align-items: center;
 }
 
 .admin-main {
