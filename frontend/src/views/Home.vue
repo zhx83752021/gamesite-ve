@@ -39,7 +39,7 @@
           </div>
 
           <div class="flex gap-4">
-            <button @click="$router.push('/games/3')"
+            <button @click="gotoFirstGame"
                     class="px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-lg font-bold rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] transition-all duration-300 transform hover:scale-105">
               立即体验
             </button>
@@ -71,19 +71,26 @@
           <h2 class="text-4xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text">
             🔥 热门推荐
           </h2>
-          <button class="text-cyan-400 hover:text-cyan-300 flex items-center gap-2">
+          <router-link
+            to="/games"
+            class="text-cyan-400 hover:text-cyan-300 flex items-center gap-2"
+          >
             查看全部
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
-          </button>
+          </router-link>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          <div v-for="game in games" :key="game.id"
-               class="group cursor-pointer">
+          <div
+            v-for="game in games"
+            :key="game.id"
+            class="group cursor-pointer"
+            @click="$router.push(`/games/${game.slug || game.id}`)"
+          >
             <div class="relative rounded-2xl overflow-hidden mb-4 transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(6,182,212,0.4)]">
-              <img :src="game.image" :alt="game.title" class="w-full aspect-[3/4] object-cover"/>
+              <img :src="game.cover_image || game.image" :alt="game.title" class="w-full aspect-[3/4] object-cover"/>
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div class="absolute top-2 right-2 px-2 py-1 bg-gradient-to-r from-red-500 to-pink-500 rounded-full text-xs font-bold">
                 HOT
@@ -225,18 +232,51 @@
 </template>
 
 <script setup lang="ts">
-const games = [
-  { id: 1, title: 'Beat Saber', image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=400&h=500&fit=crop', rating: 4.9, price: 78 },
-  { id: 2, title: 'Half-Life: Alyx', image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=500&fit=crop', rating: 4.8, price: 88 },
-  { id: 3, title: 'Superhot VR', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=500&fit=crop', rating: 4.7, price: 98 },
-  { id: 4, title: 'VR Racing', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=500&fit=crop', rating: 4.6, price: 68 },
-  { id: 5, title: 'Space Odyssey', image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=400&h=500&fit=crop', rating: 4.8, price: 118 },
-  { id: 6, title: 'Neon City', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=500&fit=crop', rating: 4.9, price: 128 },
-  { id: 7, title: 'Cyber Arena', image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=400&h=500&fit=crop', rating: 4.5, price: 88 },
-  { id: 8, title: 'Virtual World', image: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=400&h=500&fit=crop', rating: 4.7, price: 98 },
-  { id: 9, title: 'Dream VR', image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=400&h=500&fit=crop', rating: 4.6, price: 78 },
-  { id: 10, title: 'Future Game', image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=400&h=500&fit=crop', rating: 4.8, price: 108 }
-]
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { gameApi } from '@/api/game'
+import { ElMessage } from 'element-plus'
+
+const router = useRouter()
+const games = ref<any[]>([])
+const loading = ref(false)
+
+// 加载热门推荐游戏
+async function loadPopularGames() {
+  loading.value = true
+  try {
+    const res = await gameApi.getPopular(10)
+    if (res.code === 200) {
+      games.value = res.data.games
+    }
+  } catch (error) {
+    console.error('Failed to load popular games:', error)
+    // 加载失败时使用模拟数据
+    games.value = [
+      { id: '1', title: 'Beat Saber', image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=400&h=500&fit=crop', rating: 4.9, price: 78 },
+      { id: '2', title: 'Half-Life: Alyx', image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=500&fit=crop', rating: 4.8, price: 88 },
+      { id: '3', title: 'Superhot VR', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=500&fit=crop', rating: 4.7, price: 98 },
+      { id: '4', title: 'VR Racing', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=500&fit=crop', rating: 4.6, price: 68 },
+      { id: '5', title: 'Space Odyssey', image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=400&h=500&fit=crop', rating: 4.8, price: 118 }
+    ]
+  } finally {
+    loading.value = false
+  }
+}
+
+// 跳转到第一个游戏详情
+function gotoFirstGame() {
+  if (games.value.length > 0) {
+    const firstGame = games.value[0]
+    router.push(`/games/${firstGame.slug || firstGame.id}`)
+  } else {
+    router.push('/games')
+  }
+}
+
+onMounted(() => {
+  loadPopularGames()
+})
 
 const categories = [
   { name: '动作', icon: '⚔️' },

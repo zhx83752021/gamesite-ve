@@ -44,7 +44,7 @@
       <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         <div v-for="game in allGames" :key="game.id"
              class="group cursor-pointer"
-             @click="$router.push(`/games/${game.id}`)">
+             @click="$router.push(`/games/${game.slug || game.id}`)">
           <div class="relative rounded-2xl overflow-hidden mb-3 transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(6,182,212,0.4)]">
             <img :src="game.cover_image" :alt="game.title" class="w-full aspect-[3/4] object-cover"/>
             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -89,6 +89,7 @@ import { ElMessage } from 'element-plus'
 interface Game {
   id: string
   title: string
+  slug: string
   cover_image: string
   rating: number
   price: number
@@ -138,12 +139,12 @@ async function loadGames() {
       if (activeFilter.value === '最新上架') {
         params.sortBy = 'created_at'
       } else if (activeFilter.value === '热门推荐') {
-        params.sortBy = 'download_count'
+        params.sortBy = 'downloads'
       } else {
-        // 分类筛选 - 直接使用分类名称
+        // 分类筛选 - 使用分类ID
         const category = categories.value.find(cat => cat.name === activeFilter.value)
-        if (category) {
-          params.category = category.slug || category.name
+        if (category && category.id) {
+          params.category = category.id
         }
       }
     }

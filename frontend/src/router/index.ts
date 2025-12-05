@@ -20,7 +20,7 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '游戏库' }
       },
       {
-        path: 'games/:id',
+        path: 'games/:slug',
         name: 'GameDetail',
         component: () => import('@/views/games/GameDetail.vue'),
         meta: { title: '游戏详情' }
@@ -32,10 +32,40 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '社区论坛' }
       },
       {
+        path: 'community/post/:id',
+        name: 'PostDetail',
+        component: () => import('@/views/community/PostDetail.vue'),
+        meta: { title: '帖子详情' }
+      },
+      {
+        path: 'community/create',
+        name: 'CreatePost',
+        component: () => import('@/views/community/CreatePost.vue'),
+        meta: { title: '发布帖子', requiresAuth: true }
+      },
+      {
         path: 'user',
         name: 'UserCenter',
         component: () => import('@/views/user/Profile.vue'),
         meta: { title: '个人中心', requiresAuth: true }
+      },
+      {
+        path: 'user/library',
+        name: 'UserLibrary',
+        component: () => import('@/views/user/Library.vue'),
+        meta: { title: '我的游戏库', requiresAuth: true }
+      },
+      {
+        path: 'user/orders',
+        name: 'UserOrders',
+        component: () => import('@/views/user/Orders.vue'),
+        meta: { title: '我的订单', requiresAuth: true }
+      },
+      {
+        path: 'user/settings',
+        name: 'UserSettings',
+        component: () => import('@/views/user/Settings.vue'),
+        meta: { title: '账号设置', requiresAuth: true }
       },
       {
         path: 'pricing',
@@ -108,10 +138,28 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '游戏管理' }
       },
       {
+        path: 'games/add',
+        name: 'AdminGameAdd',
+        component: () => import('@/views/admin/GameEdit.vue'),
+        meta: { title: '添加游戏' }
+      },
+      {
+        path: 'games/edit/:id',
+        name: 'AdminGameEdit',
+        component: () => import('@/views/admin/GameEdit.vue'),
+        meta: { title: '编辑游戏' }
+      },
+      {
         path: 'users',
         name: 'AdminUsers',
         component: () => import('@/views/admin/UserManage.vue'),
         meta: { title: '用户管理' }
+      },
+      {
+        path: 'users/edit/:id',
+        name: 'AdminUserEdit',
+        component: () => import('@/views/admin/UserEdit.vue'),
+        meta: { title: '编辑用户' }
       },
       {
         path: 'comments',

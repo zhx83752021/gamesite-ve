@@ -171,13 +171,18 @@ const comments = ref<any[]>([])
 async function loadGameDetail() {
   loading.value = true
   try {
-    const gameId = route.params.id as string
-    const res = await gameApi.getDetail(gameId)
+    const slug = route.params.slug as string
+    // 判断是slug还是id（兼容旧链接）
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug)
+
+    const res = isUUID
+      ? await gameApi.getDetail(slug)
+      : await gameApi.getBySlug(slug)
 
     if (res.code === 200) {
       game.value = res.data.game
       // 加载评论
-      await loadComments(gameId)
+      await loadComments(game.value.id)
     }
   } catch (error) {
     console.error('Failed to load game detail:', error)

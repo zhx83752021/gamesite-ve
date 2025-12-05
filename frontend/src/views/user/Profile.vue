@@ -14,13 +14,29 @@
 
       <div class="relative z-10 max-w-7xl mx-auto px-8">
         <div class="flex items-center gap-6">
-          <div class="w-32 h-32 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex-shrink-0 border-4 border-white/20"></div>
+          <div class="w-32 h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-white/20 bg-gradient-to-r from-cyan-500 to-purple-500">
+            <img
+              src="https://api.dicebear.com/7.x/avataaars/svg?seed=user123"
+              alt="用户头像"
+              class="w-full h-full object-cover"
+            />
+          </div>
           <div>
             <h1 class="text-5xl font-bold text-white mb-3 drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">玩家昵称</h1>
             <p class="text-xl text-gray-200 mb-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">ID: 123456 | 等级: Lv.25</p>
             <div class="flex gap-4">
-              <button class="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-full hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all">编辑资料</button>
-              <button class="px-6 py-2 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white font-bold rounded-full hover:bg-white/20 transition-all">设置</button>
+              <button
+                @click="$router.push('/user/settings')"
+                class="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-full hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all"
+              >
+                编辑资料
+              </button>
+              <button
+                @click="$router.push('/user/settings')"
+                class="px-6 py-2 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white font-bold rounded-full hover:bg-white/20 transition-all"
+              >
+                设置
+              </button>
             </div>
           </div>
         </div>

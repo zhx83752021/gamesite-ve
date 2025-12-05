@@ -4,7 +4,6 @@
     <div
       v-if="visible"
       class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      @click="handleBackdropClick"
     >
       <!-- 模态窗口内容 -->
       <Transition name="scale">
@@ -443,13 +442,12 @@ function handleClose() {
   }
 }
 
-// 处理点击遮罩层
-function handleBackdropClick(event: MouseEvent) {
-  // 确保点击的是遮罩层本身，而不是内部内容
-  if (event.target === event.currentTarget) {
-    handleClose()
-  }
-}
+// 处理点击遮罩层 - 已禁用，防止误关闭
+// function handleBackdropClick(event: MouseEvent) {
+//   if (event.target === event.currentTarget) {
+//     handleClose()
+//   }
+// }
 
 // 提交表单
 async function handleSubmit() {
