@@ -241,6 +241,263 @@ app.get('/api/v1/auth/me', authenticateToken, async (req: any, res) => {
   }
 });
 
+// ========== 游戏路由 ==========
+
+// 获取游戏列表
+app.get('/api/v1/games', async (req, res) => {
+  try {
+    const {
+      page = 1,
+      pageSize = 12,
+      category,
+      search,
+      sortBy = 'created_at',
+      order = 'desc',
+      status = 'published'
+    } = req.query;
+
+    const pageNum = parseInt(page as string);
+    const pageSizeNum = parseInt(pageSize as string);
+    const offset = (pageNum - 1) * pageSizeNum;
+
+    let query = `
+      SELECT g.*
+      FROM games g
+      WHERE g.status = $1
+    `;
+
+    const queryParams: any[] = [status];
+    let paramIndex = 2;
+
+    // 分类筛选
+    if (category) {
+      query += ` AND g.category = $${paramIndex}`;
+      queryParams.push(category);
+      paramIndex++;
+    }
+
+    // 搜索
+    if (search) {
+      query += ` AND (g.title ILIKE $${paramIndex} OR g.description ILIKE $${paramIndex})`;
+      queryParams.push(`%${search}%`);
+      paramIndex++;
+    }
+
+    // 排序
+    const validSortColumns = ['rating', 'download_count', 'created_at', 'view_count'];
+    const sortColumn = validSortColumns.includes(sortBy as string) ? sortBy : 'created_at';
+    const sortOrder = order === 'asc' ? 'ASC' : 'DESC';
+    query += ` ORDER BY g.${sortColumn} ${sortOrder}`;
+
+    // 分页
+    query += ` LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+    queryParams.push(pageSizeNum, offset);
+
+    const result = await pool.query(query, queryParams);
+
+    // 获取总数
+    let countQuery = 'SELECT COUNT(*) FROM games WHERE status = $1';
+    const countParams: any[] = [status];
+    let countIndex = 2;
+
+    if (category) {
+      countQuery += ` AND category = $${countIndex}`;
+      countParams.push(category);
+      countIndex++;
+    }
+
+    if (search) {
+      countQuery += ` AND (title ILIKE $${countIndex} OR description ILIKE $${countIndex})`;
+      countParams.push(`%${search}%`);
+    }
+
+    const countResult = await pool.query(countQuery, countParams);
+    const total = parseInt(countResult.rows[0].count);
+
+    res.json({
+      code: 200,
+      message: 'Games retrieved successfully',
+      data: {
+        items: result.rows,
+        pagination: {
+          page: pageNum,
+          pageSize: pageSizeNum,
+          total,
+          totalPages: Math.ceil(total / pageSizeNum)
+        }
+      }
+    });
+  } catch (error: any) {
+    console.error('Get games error:', error);
+    res.status(500).json({
+      code: 500,
+      message: 'Failed to get games'
+    });
+  }
+});
+
+// 获取推荐游戏
+app.get('/api/v1/games/recommended', async (req, res) => {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+
+    const query = `
+      SELECT g.*
+      FROM games g
+      WHERE g.status = 'published' AND g.is_featured = true
+      ORDER BY g.rating DESC, g.download_count DESC
+      LIMIT $1
+    `;
+
+    const result = await pool.query(query, [limit]);
+
+    res.json({
+      code: 200,
+      message: 'Recommended games retrieved successfully',
+      data: { games: result.rows }
+    });
+  } catch (error: any) {
+    console.error('Get recommended games error:', error);
+    res.status(500).json({
+      code: 500,
+      message: 'Failed to get recommended games'
+    });
+  }
+});
+
+// 获取热门游戏
+app.get('/api/v1/games/popular', async (req, res) => {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+
+    const query = `
+      SELECT g.*
+      FROM games g
+      WHERE g.status = 'published'
+      ORDER BY g.download_count DESC, g.view_count DESC
+      LIMIT $1
+    `;
+
+    const result = await pool.query(query, [limit]);
+
+    res.json({
+      code: 200,
+      message: 'Popular games retrieved successfully',
+      data: { games: result.rows }
+    });
+  } catch (error: any) {
+    console.error('Get popular games error:', error);
+    res.status(500).json({
+      code: 500,
+      message: 'Failed to get popular games'
+    });
+  }
+});
+
+// 根据slug获取游戏
+app.get('/api/v1/games/slug/:slug', async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const query = `
+      SELECT g.*
+      FROM games g
+      WHERE g.id = $1 AND g.status = 'published'
+    `;
+
+    const result = await pool.query(query, [slug]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        code: 404,
+        message: 'Game not found'
+      });
+    }
+
+    // 增加浏览量
+    await pool.query('UPDATE games SET view_count = view_count + 1 WHERE id = $1', [slug]);
+
+    res.json({
+      code: 200,
+      message: 'Game retrieved successfully',
+      data: { game: result.rows[0] }
+    });
+  } catch (error: any) {
+    console.error('Get game by slug error:', error);
+    res.status(500).json({
+      code: 500,
+      message: 'Failed to get game'
+    });
+  }
+});
+
+// 根据ID获取游戏详情
+app.get('/api/v1/games/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const query = `
+      SELECT g.*
+      FROM games g
+      WHERE g.id = $1
+    `;
+
+    const result = await pool.query(query, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        code: 404,
+        message: 'Game not found'
+      });
+    }
+
+    // 增加浏览量
+    await pool.query('UPDATE games SET view_count = view_count + 1 WHERE id = $1', [id]);
+
+    res.json({
+      code: 200,
+      message: 'Game retrieved successfully',
+      data: { game: result.rows[0] }
+    });
+  } catch (error: any) {
+    console.error('Get game error:', error);
+    res.status(500).json({
+      code: 500,
+      message: 'Failed to get game'
+    });
+  }
+});
+
+// 获取游戏分类
+app.get('/api/v1/categories', async (req, res) => {
+  try {
+    const query = `
+      SELECT
+        category as name,
+        category as slug,
+        COUNT(*) as game_count
+      FROM games
+      WHERE status = 'published'
+      GROUP BY category
+      ORDER BY game_count DESC
+    `;
+
+    const result = await pool.query(query);
+
+    res.json({
+      code: 200,
+      message: 'Categories retrieved successfully',
+      data: { categories: result.rows }
+    });
+  } catch (error: any) {
+    console.error('Get categories error:', error);
+    res.status(500).json({
+      code: 500,
+      message: 'Failed to get categories'
+    });
+  }
+});
+
 // 404处理
 app.use((req, res) => {
   res.status(404).json({
