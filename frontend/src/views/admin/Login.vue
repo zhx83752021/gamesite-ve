@@ -92,12 +92,15 @@
 
         <!-- 返回前台链接 -->
         <div class="mt-6 text-center">
-          <router-link to="/" class="text-cyan-400 hover:text-cyan-300 text-sm flex items-center justify-center gap-1">
+          <button
+            @click="goToHome"
+            class="text-cyan-400 hover:text-cyan-300 text-sm inline-flex items-center justify-center gap-1 cursor-pointer transition-colors"
+          >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             返回前台首页
-          </router-link>
+          </button>
         </div>
       </div>
 
@@ -189,6 +192,11 @@ async function handleLogin() {
       loading.value = false
     }
   })
+}
+
+// 返回前台首页
+function goToHome() {
+  router.push('/')
 }
 </script>
 
