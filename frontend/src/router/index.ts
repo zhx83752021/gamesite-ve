@@ -162,6 +162,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '编辑用户' }
       },
       {
+        path: 'init-database',
+        name: 'AdminInitDatabase',
+        component: () => import('@/views/admin/InitDatabase.vue'),
+        meta: { title: '初始化数据库' }
+      },
+      {
         path: 'comments',
         name: 'AdminComments',
         component: () => import('@/views/admin/CommentManage.vue'),
