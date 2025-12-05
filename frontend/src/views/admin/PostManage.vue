@@ -10,8 +10,8 @@
           <el-input v-model="filterForm.keyword" placeholder="搜索标题、内容" clearable />
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="filterForm.status" placeholder="全部状态" clearable>
-            <el-option label="全部" value="" />
+          <el-select v-model="filterForm.status" placeholder="请选择状态" clearable style="width: 180px">
+            <el-option label="全部状态" value="" />
             <el-option label="待审核" value="pending" />
             <el-option label="已发布" value="published" />
             <el-option label="已拒绝" value="rejected" />
@@ -19,8 +19,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="分类">
-          <el-select v-model="filterForm.category" placeholder="全部分类" clearable>
-            <el-option label="全部" value="" />
+          <el-select v-model="filterForm.category" placeholder="请选择分类" clearable style="width: 180px">
+            <el-option label="全部分类" value="" />
             <el-option label="游戏攻略" value="guide" />
             <el-option label="新手教程" value="tutorial" />
             <el-option label="经验分享" value="experience" />
