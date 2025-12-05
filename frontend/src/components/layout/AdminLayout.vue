@@ -104,7 +104,7 @@ const route = useRoute()
 const isCollapse = ref(false)
 const userInfo = ref({
   username: 'Admin',
-  avatar: ''
+  avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
 })
 
 const activeMenu = computed(() => route.path)

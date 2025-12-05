@@ -10,8 +10,8 @@
           <el-input v-model="filterForm.keyword" placeholder="搜索举报内容" clearable />
         </el-form-item>
         <el-form-item label="举报类型">
-          <el-select v-model="filterForm.type" placeholder="全部类型" clearable>
-            <el-option label="全部" value="" />
+          <el-select v-model="filterForm.type" placeholder="请选择举报类型" clearable style="width: 180px">
+            <el-option label="全部类型" value="" />
             <el-option label="垃圾信息" value="spam" />
             <el-option label="骚扰行为" value="harassment" />
             <el-option label="不当内容" value="inappropriate" />
@@ -21,8 +21,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="处理状态">
-          <el-select v-model="filterForm.status" placeholder="全部状态" clearable>
-            <el-option label="全部" value="" />
+          <el-select v-model="filterForm.status" placeholder="请选择处理状态" clearable style="width: 180px">
+            <el-option label="全部状态" value="" />
             <el-option label="待处理" value="pending" />
             <el-option label="处理中" value="processing" />
             <el-option label="已完成" value="completed" />

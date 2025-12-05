@@ -71,14 +71,16 @@
             <el-tag v-else type="info">草稿</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="240" fixed="right">
+        <el-table-column label="操作" width="250" fixed="right">
           <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="handleView(row)">查看</el-button>
-            <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
-            <el-button link type="warning" size="small" @click="handleChangeStatus(row)">
-              {{ row.status === 'published' ? '下架' : '发布' }}
-            </el-button>
-            <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
+            <div style="white-space: nowrap;">
+              <el-button link type="primary" size="small" @click="handleView(row)">查看</el-button>
+              <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
+              <el-button link type="warning" size="small" @click="handleChangeStatus(row)">
+                {{ row.status === 'published' ? '下架' : '发布' }}
+              </el-button>
+              <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
