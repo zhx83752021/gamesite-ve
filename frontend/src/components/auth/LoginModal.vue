@@ -274,6 +274,7 @@ onUnmounted(() => {
 // 切换登录/注册模式
 function switchMode() {
   isLogin.value = !isLogin.value
+  // 切换模式时清空所有表单
   resetForm()
 }
 
@@ -290,6 +291,16 @@ function resetForm() {
   emailError.value = ''
   emailValid.value = false
 }
+
+// 清除密码（切换模式时使用）
+function clearPasswords() {
+  formData.password = ''
+  formData.confirmPassword = ''
+}
+
+// 防抖定时器
+let usernameCheckTimer: number | null = null
+let emailCheckTimer: number | null = null
 
 // 检查用户名是否存在
 async function checkUsername() {
@@ -310,7 +321,7 @@ async function checkUsername() {
   usernameValid.value = false
 
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/auth/check-username?username=${encodeURIComponent(formData.username)}`)
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/v1/auth/check-username?username=${encodeURIComponent(formData.username)}`)
     const data = await response.json()
 
     console.log('Check username response:', data) // 调试日志
@@ -338,6 +349,16 @@ async function checkUsername() {
   }
 }
 
+// 实时检查用户名（防抖）
+function checkUsernameDebounced() {
+  if (usernameCheckTimer) {
+    clearTimeout(usernameCheckTimer)
+  }
+  usernameCheckTimer = setTimeout(() => {
+    checkUsername()
+  }, 500) // 500ms防抖
+}
+
 // 检查邮箱是否存在
 async function checkEmail() {
   if (!formData.email) {
@@ -358,7 +379,7 @@ async function checkEmail() {
   emailValid.value = false
 
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/v1/auth/check-email?email=${encodeURIComponent(formData.email)}`)
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/v1/auth/check-email?email=${encodeURIComponent(formData.email)}`)
     const data = await response.json()
 
     console.log('Check email response:', data) // 调试日志
@@ -386,10 +407,40 @@ async function checkEmail() {
   }
 }
 
+// 实时检查邮箱（防抖）
+function checkEmailDebounced() {
+  if (emailCheckTimer) {
+    clearTimeout(emailCheckTimer)
+  }
+  emailCheckTimer = setTimeout(() => {
+    checkEmail()
+  }, 500) // 500ms防抖
+}
+
+// 监听用户名输入实时验证
+watch(() => formData.username, () => {
+  if (!isLogin.value && formData.username) {
+    checkUsernameDebounced()
+  }
+})
+
+// 监听邮箱输入实时验证
+watch(() => formData.email, () => {
+  if (!isLogin.value && formData.email) {
+    checkEmailDebounced()
+  }
+})
+
 // 关闭对话框
 function handleClose() {
   visible.value = false
-  resetForm()
+  // 只在登录模式下清空表单，注册模式保留信息
+  if (isLogin.value) {
+    resetForm()
+  } else {
+    // 注册模式只清除密码
+    clearPasswords()
+  }
 }
 
 // 处理点击遮罩层
