@@ -164,6 +164,52 @@
         <el-button type="primary" @click="confirmEdit">保存</el-button>
       </template>
     </el-dialog>
+
+    <!-- 添加游戏对话框 -->
+    <el-dialog v-model="addDialogVisible" title="添加游戏" width="600px">
+      <el-form :model="addForm" label-width="100px" ref="addFormRef">
+        <el-form-item label="游戏名称" prop="title">
+          <el-input v-model="addForm.title" placeholder="请输入游戏名称" />
+        </el-form-item>
+        <el-form-item label="游戏描述" prop="description">
+          <el-input v-model="addForm.description" placeholder="请输入游戏描述" type="textarea" />
+        </el-form-item>
+        <el-form-item label="分类" prop="category">
+          <el-select v-model="addForm.category" placeholder="请选择分类">
+            <el-option label="动作冒险" value="action" />
+            <el-option label="解谜益智" value="puzzle" />
+            <el-option label="运动健身" value="fitness" />
+            <el-option label="音乐节奏" value="music" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="开发者" prop="developer">
+          <el-input v-model="addForm.developer" placeholder="请输入开发者名称" />
+        </el-form-item>
+        <el-form-item label="封面图片" prop="cover_image">
+          <el-input v-model="addForm.cover_image" placeholder="请输入封面图片URL" />
+        </el-form-item>
+        <el-form-item label="价格类型">
+          <el-radio-group v-model="addForm.pricing_type">
+            <el-radio label="free">免费</el-radio>
+            <el-radio label="paid">付费</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="价格" v-if="addForm.pricing_type === 'paid'" prop="price">
+          <el-input-number v-model="addForm.price" :min="0" :step="1" />
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select v-model="addForm.status" placeholder="请选择状态">
+            <el-option label="草稿" value="draft" />
+            <el-option label="审核中" value="review" />
+            <el-option label="已发布" value="published" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="addDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmAdd">添加</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -176,7 +222,10 @@ const loading = ref(false)
 const gameList = ref<any[]>([])
 const viewDialogVisible = ref(false)
 const editDialogVisible = ref(false)
+const addDialogVisible = ref(false)
+const addFormRef = ref()
 const currentGame = ref<any>(null)
+
 const editForm = reactive({
   title: '',
   category: '',
@@ -184,6 +233,31 @@ const editForm = reactive({
   price: 0,
   status: 'draft'
 })
+
+const addForm = reactive({
+  title: '',
+  description: '',
+  category: '',
+  developer: '',
+  cover_image: '',
+  pricing_type: 'free',
+  price: 0,
+  version: '1.0.0',
+  file_size: 100,
+  download_url: '',
+  status: 'draft',
+  is_vip_only: false,
+  is_featured: false
+})
+
+const addRules = {
+  title: [{ required: true, message: '请输入游戏名称', trigger: 'blur' }],
+  description: [{ required: true, message: '请输入游戏描述', trigger: 'blur' }],
+  category: [{ required: true, message: '请选择分类', trigger: 'change' }],
+  developer: [{ required: true, message: '请输入开发者名称', trigger: 'blur' }],
+  cover_image: [{ required: true, message: '请输入封面图片URL', trigger: 'blur' }],
+  status: [{ required: true, message: '请选择状态', trigger: 'change' }]
+}
 
 const searchForm = reactive({
   title: '',
@@ -264,7 +338,48 @@ function handlePageChange() {
 }
 
 function handleAdd() {
-  ElMessage.info('添加游戏功能开发中')
+  // 重置表单
+  Object.assign(addForm, {
+    title: '',
+    description: '',
+    category: '',
+    developer: '',
+    cover_image: '',
+    pricing_type: 'free',
+    price: 0,
+    version: '1.0.0',
+    file_size: 100,
+    download_url: '',
+    status: 'draft',
+    is_vip_only: false,
+    is_featured: false
+  })
+  addDialogVisible.value = true
+}
+
+async function confirmAdd() {
+  if (!addFormRef.value) return
+
+  try {
+    await addFormRef.value.validate()
+    loading.value = true
+
+    // 模拟API调用
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    // TODO: 调用实际API
+    // await gameApi.create(addForm)
+
+    ElMessage.success('游戏添加成功')
+    addDialogVisible.value = false
+    loadGames()
+  } catch (error: any) {
+    if (error !== false) {
+      ElMessage.error('请完善表单信息')
+    }
+  } finally {
+    loading.value = false
+  }
 }
 
 function handleView(row: any) {
