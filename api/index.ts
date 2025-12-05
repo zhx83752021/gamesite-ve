@@ -212,6 +212,72 @@ app.post('/api/v1/auth/register', async (req, res) => {
   }
 });
 
+// 检查用户名是否存在
+app.get('/api/v1/auth/check-username', async (req, res) => {
+  try {
+    const { username } = req.query;
+
+    if (!username) {
+      return res.status(400).json({
+        code: 400,
+        message: 'Username is required'
+      });
+    }
+
+    const result = await pool.query(
+      'SELECT id FROM users WHERE username = $1',
+      [username]
+    );
+
+    res.json({
+      code: 200,
+      message: 'Success',
+      data: {
+        exists: result.rows.length > 0
+      }
+    });
+  } catch (error: any) {
+    console.error('Check username error:', error);
+    res.status(500).json({
+      code: 500,
+      message: 'Internal server error'
+    });
+  }
+});
+
+// 检查邮箱是否存在
+app.get('/api/v1/auth/check-email', async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email) {
+      return res.status(400).json({
+        code: 400,
+        message: 'Email is required'
+      });
+    }
+
+    const result = await pool.query(
+      'SELECT id FROM users WHERE email = $1',
+      [email]
+    );
+
+    res.json({
+      code: 200,
+      message: 'Success',
+      data: {
+        exists: result.rows.length > 0
+      }
+    });
+  } catch (error: any) {
+    console.error('Check email error:', error);
+    res.status(500).json({
+      code: 500,
+      message: 'Internal server error'
+    });
+  }
+});
+
 // 获取当前用户信息
 app.get('/api/v1/auth/me', authenticateToken, async (req: any, res) => {
   try {
