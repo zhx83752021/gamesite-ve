@@ -261,7 +261,9 @@ app.get('/api/v1/games', async (req, res) => {
     const offset = (pageNum - 1) * pageSizeNum;
 
     let query = `
-      SELECT g.*
+      SELECT
+        g.*,
+        g.category as category_name
       FROM games g
       WHERE g.status = $1
     `;
@@ -342,9 +344,11 @@ app.get('/api/v1/games/recommended', async (req, res) => {
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
 
     const query = `
-      SELECT g.*
+      SELECT
+        g.*,
+        g.category as category_name
       FROM games g
-      WHERE g.status = 'published' AND g.is_featured = true
+      WHERE g.status = 'published'
       ORDER BY g.rating DESC, g.download_count DESC
       LIMIT $1
     `;
@@ -371,7 +375,9 @@ app.get('/api/v1/games/popular', async (req, res) => {
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
 
     const query = `
-      SELECT g.*
+      SELECT
+        g.*,
+        g.category as category_name
       FROM games g
       WHERE g.status = 'published'
       ORDER BY g.download_count DESC, g.view_count DESC
@@ -400,7 +406,9 @@ app.get('/api/v1/games/slug/:slug', async (req, res) => {
     const { slug } = req.params;
 
     const query = `
-      SELECT g.*
+      SELECT
+        g.*,
+        g.category as category_name
       FROM games g
       WHERE g.id = $1 AND g.status = 'published'
     `;
@@ -437,7 +445,9 @@ app.get('/api/v1/games/:id', async (req, res) => {
     const { id } = req.params;
 
     const query = `
-      SELECT g.*
+      SELECT
+        g.*,
+        g.category as category_name
       FROM games g
       WHERE g.id = $1
     `;
@@ -477,7 +487,7 @@ app.get('/api/v1/categories', async (req, res) => {
         category as slug,
         COUNT(*) as game_count
       FROM games
-      WHERE status = 'published'
+      WHERE status = 'published' AND category IS NOT NULL
       GROUP BY category
       ORDER BY game_count DESC
     `;
