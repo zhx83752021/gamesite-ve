@@ -483,6 +483,7 @@ app.get('/api/v1/categories', async (req, res) => {
   try {
     const query = `
       SELECT
+        category as id,
         category as name,
         category as slug,
         COUNT(*) as game_count

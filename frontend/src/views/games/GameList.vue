@@ -139,12 +139,13 @@ async function loadGames() {
       if (activeFilter.value === '最新上架') {
         params.sortBy = 'created_at'
       } else if (activeFilter.value === '热门推荐') {
-        params.sortBy = 'downloads'
+        params.sortBy = 'download_count'
       } else {
-        // 分类筛选 - 使用分类ID
+        // 分类筛选 - 兼容线上环境（使用分类名称）和本地环境（使用分类ID）
         const category = categories.value.find(cat => cat.name === activeFilter.value)
-        if (category && category.id) {
-          params.category = category.id
+        if (category) {
+          // 优先使用ID（本地环境），如果没有ID则使用名称（线上环境）
+          params.category = category.id || category.name
         }
       }
     }
