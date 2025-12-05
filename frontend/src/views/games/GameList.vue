@@ -138,12 +138,12 @@ async function loadGames() {
       if (activeFilter.value === '最新上架') {
         params.sortBy = 'created_at'
       } else if (activeFilter.value === '热门推荐') {
-        params.sortBy = 'downloads'
+        params.sortBy = 'download_count'
       } else {
-        // 分类筛选
+        // 分类筛选 - 直接使用分类名称
         const category = categories.value.find(cat => cat.name === activeFilter.value)
         if (category) {
-          params.category = category.id
+          params.category = category.slug || category.name
         }
       }
     }
@@ -153,9 +153,9 @@ async function loadGames() {
       allGames.value = res.data.items
       total.value = res.data.pagination.total
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to load games:', error)
-    ElMessage.error('加载游戏列表失败')
+    ElMessage.error('加载游戏列表失败：' + (error.message || '网络错误'))
   } finally {
     loading.value = false
   }

@@ -4,7 +4,7 @@
     <div
       v-if="visible"
       class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      @click.self="handleClose"
+      @click="handleBackdropClick"
     >
       <!-- 模态窗口内容 -->
       <Transition name="scale">
@@ -390,6 +390,14 @@ async function checkEmail() {
 function handleClose() {
   visible.value = false
   resetForm()
+}
+
+// 处理点击遮罩层
+function handleBackdropClick(event: MouseEvent) {
+  // 确保点击的是遮罩层本身，而不是内部内容
+  if (event.target === event.currentTarget) {
+    handleClose()
+  }
 }
 
 // 提交表单
