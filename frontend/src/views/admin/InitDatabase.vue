@@ -104,10 +104,23 @@ async function initDatabase() {
     const data = await response.json()
 
     if (response.ok && data.success) {
+      const insertedGames = data.gamesAdded || 0;
+      const totalGames = data.totalGames || 10;
+      const skippedGames = totalGames - insertedGames;
+
+      let message = `数据库初始化完成！`;
+      if (insertedGames > 0) {
+        message += `\n✅ 新增 ${insertedGames} 个游戏`;
+      }
+      if (skippedGames > 0) {
+        message += `\n⚠️ ${skippedGames} 个游戏已存在，已跳过`;
+      }
+      message += '\n现在可以访问游戏库页面查看数据了。';
+
       status.value = {
         type: 'success',
         title: '初始化成功！',
-        message: `已成功创建数据库表并插入 ${data.gamesAdded || 10} 个测试游戏。现在可以访问游戏库页面查看数据了。`
+        message: message
       }
       ElMessage.success('数据库初始化成功！')
 

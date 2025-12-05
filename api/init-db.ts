@@ -121,19 +121,24 @@ export default async function handler(req: any, res: any) {
     // 插入默认管理员账户
     const adminPassword = await bcryptjs.hash('admin123', 10);
 
-    await pool.query(`
-      INSERT INTO users (username, email, password_hash, role, bio)
-      VALUES ($1, $2, $3, $4, $5)
-      ON CONFLICT (username) DO NOTHING;
-    `, ['admin', 'admin@example.com', adminPassword, 'admin', '系统管理员']);
+    // 先检查管理员账户是否存在
+    const adminExists = await pool.query('SELECT id FROM users WHERE username = $1', ['admin']);
+    if (adminExists.rows.length === 0) {
+      await pool.query(`
+        INSERT INTO users (username, email, password_hash, role, bio)
+        VALUES ($1, $2, $3, $4, $5);
+      `, ['admin', 'admin@example.com', adminPassword, 'admin', '系统管理员']);
+    }
 
     // 插入测试开发者账户
     const devPassword = await bcryptjs.hash('admin123', 10);
-    await pool.query(`
-      INSERT INTO users (username, email, password_hash, role, bio)
-      VALUES ($1, $2, $3, $4, $5)
-      ON CONFLICT (username) DO NOTHING;
-    `, ['developer1', 'dev@example.com', devPassword, 'admin', '开发者账户']);
+    const devExists = await pool.query('SELECT id FROM users WHERE username = $1', ['developer1']);
+    if (devExists.rows.length === 0) {
+      await pool.query(`
+        INSERT INTO users (username, email, password_hash, role, bio)
+        VALUES ($1, $2, $3, $4, $5);
+      `, ['developer1', 'dev@example.com', devPassword, 'admin', '开发者账户']);
+    }
 
     // 插入测试游戏数据
     const testGames = [
@@ -329,27 +334,33 @@ export default async function handler(req: any, res: any) {
       }
     ];
 
+    let gamesInserted = 0;
     for (const game of testGames) {
-      await pool.query(`
-        INSERT INTO games (
-          title, description, category, tags, cover_image, screenshots,
-          download_url, file_size, version, developer, release_date,
-          rating, download_count, view_count, is_featured, is_vip_only, status
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
-        ON CONFLICT (title) DO NOTHING;
-      `, [
-        game.title, game.description, game.category, game.tags, game.cover_image,
-        game.screenshots, game.download_url, game.file_size, game.version,
-        game.developer, game.release_date, game.rating, game.download_count,
-        game.view_count, game.is_featured, game.is_vip_only, game.status
-      ]);
+      // 先检查游戏是否存在
+      const gameExists = await pool.query('SELECT id FROM games WHERE title = $1', [game.title]);
+      if (gameExists.rows.length === 0) {
+        await pool.query(`
+          INSERT INTO games (
+            title, description, category, tags, cover_image, screenshots,
+            download_url, file_size, version, developer, release_date,
+            rating, download_count, view_count, is_featured, is_vip_only, status
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17);
+        `, [
+          game.title, game.description, game.category, game.tags, game.cover_image,
+          game.screenshots, game.download_url, game.file_size, game.version,
+          game.developer, game.release_date, game.rating, game.download_count,
+          game.view_count, game.is_featured, game.is_vip_only, game.status
+        ]);
+        gamesInserted++;
+      }
     }
 
     res.status(200).json({
       success: true,
       message: 'Database initialized successfully with test data',
       timestamp: new Date().toISOString(),
-      gamesAdded: testGames.length
+      gamesAdded: gamesInserted,
+      totalGames: testGames.length
     });
   } catch (error: any) {
     console.error('Database initialization error:', error);
